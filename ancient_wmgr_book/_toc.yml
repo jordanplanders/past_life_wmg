@@ -1,0 +1,15 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+parts:
+  - caption: Science Bits
+    chapters:
+      - file: CapstoneProject/clustering_centers_on_raw
+      - file: CapstoneProject/jlanders_capstone_fixed
+      - file: CapstoneProject/tracer_overview_opining
+
+
+
+

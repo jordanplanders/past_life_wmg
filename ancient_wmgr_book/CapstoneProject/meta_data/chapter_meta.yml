@@ -1,0 +1,31 @@
+shortname: AncientWMG
+type: Paleobook
+thumbnail: book_thumb.png
+parts:
+  - caption: Science Bits
+    chapters:
+      - shortname: Capstone notebook
+        filename: jlanders_capstone_fixed
+        thumbnail: ttest_flows_thumb.png
+        tags:
+          domains:
+            - watermass geometry
+            - tracers
+            - endmember mixing
+          packages:
+            - basemap
+            - scipy
+            - matplotlib
+            - pandas
+            - sqlalchemy
+      - shortname: Cluster Centers
+        filename: clustering_centers_on_raw
+        thumbnail: centers_thumb.png
+        tags:
+          domains:
+            - clustering
+            - watermass geometry
+          packages:
+            - basemap
+            - scikit-learn
+            - matplotlib
