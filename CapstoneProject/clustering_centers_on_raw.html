@@ -1,0 +1,1074 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Visualizing cluster centers given added geo features &#8212; Watermass Geometry Proto exercise</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=365ca57ee442770a23c6"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'CapstoneProject/clustering_centers_on_raw';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Probing the Data" href="jlanders_capstone.html" />
+    <link rel="prev" title="Jordan’s ancient watermass geometry exploration" href="../intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Watermass Geometry Proto exercise - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Watermass Geometry Proto exercise - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Jordan’s ancient watermass geometry exploration
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Science Bits</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Visualizing cluster centers given added geo features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jlanders_capstone.html">Probing the Data</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/jordanplanders/past_life_wmg" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/jordanplanders/past_life_wmg/issues/new?title=Issue%20on%20page%20%2FCapstoneProject/clustering_centers_on_raw.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/CapstoneProject/clustering_centers_on_raw.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Visualizing cluster centers given added geo features</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># from app import app, db#, cache</span>
+
+<span class="kn">from</span> <span class="nn">matplotlib.mlab</span> <span class="kn">import</span> <span class="n">griddata</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">linspace</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">meshgrid</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">uniform</span><span class="p">,</span> <span class="n">seed</span>
+
+<span class="kn">from</span> <span class="nn">mpl_toolkits.basemap</span> <span class="kn">import</span> <span class="n">Basemap</span><span class="p">,</span> <span class="n">shiftgrid</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1</span> <span class="kn">import</span> <span class="n">make_axes_locatable</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.inset_locator</span> <span class="kn">import</span> <span class="n">inset_axes</span>
+
+<span class="n">title_sz</span> <span class="o">=</span> <span class="mi">27</span>
+<span class="n">axis_sz</span> <span class="o">=</span> <span class="mi">22</span>
+<span class="n">tick_sz</span> <span class="o">=</span> <span class="mi">21</span>
+
+<span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="kn">import</span> <span class="n">MaxNLocator</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span><span class="p">,</span> <span class="n">rcParams</span>
+<span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="n">tick_sz</span><span class="o">-</span><span class="mi">4</span><span class="p">})</span> <span class="c1"># Increase font-size</span>
+<span class="c1"># from matplotlib.backends.backend_pdf import PdfPages</span>
+<span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="k">as</span> <span class="nn">cm</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">gridspec</span>
+
+<span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">pl</span>
+
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">islice</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">pickle</span><span class="o">,</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">copy</span><span class="o">,</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">chem_ocean</span> <span class="kn">import</span> <span class="n">Build_Map</span> <span class="k">as</span> <span class="n">bm</span>
+
+<span class="kn">import</span> <span class="nn">sqlalchemy</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="visualizing-cluster-centers-given-added-geo-features">
+<h1>Visualizing cluster centers given added geo features<a class="headerlink" href="#visualizing-cluster-centers-given-added-geo-features" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">MiniBatchKMeans</span> <span class="k">as</span> <span class="n">mkm</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5432</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Returns a connection and a metadata object&#39;&#39;&#39;</span>
+    <span class="n">url</span>  <span class="o">=</span> <span class="s1">&#39;postgresql://</span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">@</span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">&#39;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">db</span><span class="p">)</span>
+
+    <span class="c1"># The return value of create_engine() is our connection object</span>
+    <span class="n">con</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">create_engine</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">client_encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+
+    <span class="c1"># We then bind the connection to MetaData()</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">MetaData</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">con</span><span class="p">,</span> <span class="n">reflect</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">con</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span> <span class="n">url</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span> <span class="n">url</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s1">&#39;jlanders&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;odv_app_dev&#39;</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5432</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/local/lib/python3.6/site-packages/psycopg2/__init__.py:144: UserWarning: The psycopg2 wheel package will be renamed from release 2.8; in order to keep installing from binary please use &quot;pip install psycopg2-binary&quot; instead. For details see: &lt;http://initd.org/psycopg/docs/install.html#binary-install-from-pypi&gt;.
+  &quot;&quot;&quot;)
+/usr/local/lib/python3.6/site-packages/ipykernel_launcher.py:10: SADeprecationWarning: reflect=True is deprecate; please use the reflect() method.
+  # Remove the CWD from sys.path while we load stuff.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">minLat</span> <span class="o">=</span> <span class="o">-</span><span class="mi">55</span>
+<span class="n">maxLat</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="n">minLon</span> <span class="o">=</span> <span class="o">-</span><span class="mi">180</span>
+<span class="n">maxLon</span> <span class="o">=</span> <span class="mi">180</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Helper function to query DataFrame for slice of interest</span>
+<span class="k">def</span> <span class="nf">dfQueryFunc</span><span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">minLon</span><span class="p">,</span> <span class="n">maxLon</span><span class="p">,</span> <span class="n">_var_names</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">basic</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="s1">&#39;Depth&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">sum_names</span> <span class="o">=</span> <span class="n">basic</span> <span class="o">+</span><span class="n">_var_names</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="n">sum_names</span> <span class="o">=</span> <span class="n">basic</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">_var_names</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">sum_names</span><span class="p">)</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sum_names</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;Latitude&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">lat_target</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;Latitude&#39;</span><span class="p">]</span>
+        <span class="n">minLat</span> <span class="o">=</span> <span class="n">lat_target</span><span class="o">-</span><span class="mf">1.5</span>
+        <span class="n">maxLat</span> <span class="o">=</span> <span class="n">lat_target</span><span class="o">+</span><span class="mf">1.5</span>
+        <span class="p">(</span><span class="n">lonMin</span><span class="p">,</span> <span class="n">lonMax</span><span class="p">)</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lonLimits&#39;</span><span class="p">]</span>
+        <span class="c1"># _var_df = _df3_sub[sum_names].query(&#39;Latitude &gt;= &#39;+str(lat_target-3)+ &#39;and Latitude &lt;= &#39;+str(lat_target+3)+ &#39; and Longitude &gt;= &#39;+str(lonMin)+ &#39;and Longitude &lt;= &#39;+str(lonMax))</span>
+    <span class="k">if</span> <span class="s1">&#39;Longitude&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">lon_target</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;Longitude&#39;</span><span class="p">]</span>
+        <span class="n">minLon</span> <span class="o">=</span> <span class="n">lon_target</span><span class="o">-</span><span class="mf">1.5</span>
+        <span class="n">maxLon</span> <span class="o">=</span> <span class="n">lon_target</span><span class="o">+</span><span class="mf">1.5</span>
+        <span class="p">(</span><span class="n">latMin</span><span class="p">,</span> <span class="n">latMax</span><span class="p">)</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;latLimits&#39;</span><span class="p">]</span>
+        <span class="c1"># _var_df = _df3_sub[sum_names].query(&#39;Longitude &gt;= &#39;+str(lon_target-3)+ &#39;and Longitude &lt;= &#39;+str(lon_target+3) +&#39; and Latitude &gt;= &#39;+str(latMin)+ &#39;and Latitude &lt;= &#39;+str(latMax))</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;select &quot;</span><span class="o">+</span> <span class="n">cols</span><span class="o">+</span> <span class="s2">&quot; from woa13 where latitude&gt; </span><span class="si">{}</span><span class="s2"> AND latitude&lt; </span><span class="si">{}</span><span class="s2"> AND longitude&gt;</span><span class="si">{}</span><span class="s2"> and longitude&lt;</span><span class="si">{}</span><span class="s2">;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">minLat</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">maxLat</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">minLon</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">maxLon</span><span class="p">))</span>
+    
+    <span class="k">if</span> <span class="s1">&#39;Depth&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">depth_target</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;Depth&#39;</span><span class="p">]</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;select &quot;</span><span class="o">+</span> <span class="n">cols</span><span class="o">+</span> <span class="s2">&quot; from woa13 where latitude&gt; </span><span class="si">{}</span><span class="s2"> AND latitude&lt; </span><span class="si">{}</span><span class="s2"> AND longitude&gt;</span><span class="si">{}</span><span class="s2"> and longitude&lt;</span><span class="si">{}</span><span class="s2"> and depth=</span><span class="si">{}</span><span class="s2">;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">minLat</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">maxLat</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">minLon</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">maxLon</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">depth_target</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">query</span><span class="p">,</span> <span class="n">sum_names</span><span class="c1">#_var_df</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tracers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;salinity&#39;</span><span class="p">,</span> <span class="s1">&#39;oxygen&#39;</span><span class="p">,</span> <span class="s1">&#39;nitrate&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">]</span>
+<span class="n">query</span><span class="p">,</span> <span class="n">sum_names</span> <span class="o">=</span> <span class="n">dfQueryFunc</span><span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">minLon</span><span class="p">,</span> <span class="n">maxLon</span><span class="p">,</span> <span class="n">tracers</span><span class="p">,</span> <span class="n">Depth</span><span class="o">=</span><span class="mi">1500</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;station&#39;, &#39;longitude&#39;, &#39;latitude&#39;, &#39;salinity&#39;, &#39;oxygen&#39;, &#39;nitrate&#39;, &#39;temperature&#39;]
+select station, longitude, latitude, salinity, oxygen, nitrate, temperature from woa13 where latitude&gt; -55 AND latitude&lt; 60 AND longitude&gt;-180 and longitude&lt;180 and depth=1500;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_array</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+    <span class="n">data_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_array</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">sum_names</span>
+<span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+
+<span class="n">lat_scale</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">lat_scale</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;s_latitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lat_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]])</span>
+
+<span class="n">lon_scale</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">lon_scale</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;s_longitude&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lon_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]])</span>
+
+<span class="k">for</span> <span class="n">tracer</span> <span class="ow">in</span> <span class="n">tracers</span><span class="p">:</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">tracer</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">decimals</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+    
+    <span class="n">scale</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+
+    <span class="n">df</span><span class="p">[[</span><span class="n">tracer</span><span class="p">]]</span> <span class="o">=</span> <span class="n">scale</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="n">tracer</span><span class="p">]]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>longitude</th>
+      <th>latitude</th>
+      <th>salinity</th>
+      <th>oxygen</th>
+      <th>nitrate</th>
+      <th>temperature</th>
+      <th>s_latitude</th>
+      <th>s_longitude</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>26361.000000</td>
+      <td>26361.000000</td>
+      <td>2.636100e+04</td>
+      <td>2.636100e+04</td>
+      <td>2.636100e+04</td>
+      <td>2.636100e+04</td>
+      <td>2.636100e+04</td>
+      <td>2.636100e+04</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>-14.016217</td>
+      <td>-7.010944</td>
+      <td>-2.577911e-15</td>
+      <td>-1.983838e-16</td>
+      <td>3.795168e-16</td>
+      <td>-4.808650e-16</td>
+      <td>-1.725076e-17</td>
+      <td>-2.156345e-18</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>111.438920</td>
+      <td>30.964058</td>
+      <td>1.000019e+00</td>
+      <td>1.000019e+00</td>
+      <td>1.000019e+00</td>
+      <td>1.000019e+00</td>
+      <td>1.000019e+00</td>
+      <td>1.000019e+00</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-179.500000</td>
+      <td>-54.500000</td>
+      <td>-2.444244e+01</td>
+      <td>-2.257720e+00</td>
+      <td>-4.594790e+00</td>
+      <td>-2.760163e+00</td>
+      <td>-1.533712e+00</td>
+      <td>-1.485001e+00</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-118.500000</td>
+      <td>-34.500000</td>
+      <td>-2.362516e-01</td>
+      <td>-8.329838e-01</td>
+      <td>-3.065452e-01</td>
+      <td>-4.126793e-01</td>
+      <td>-8.877899e-01</td>
+      <td>-9.376057e-01</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>-25.500000</td>
+      <td>-9.500000</td>
+      <td>-1.524248e-01</td>
+      <td>1.408474e-01</td>
+      <td>1.524210e-01</td>
+      <td>-2.182675e-01</td>
+      <td>-8.038685e-02</td>
+      <td>-1.030520e-01</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>83.500000</td>
+      <td>17.500000</td>
+      <td>9.648754e-02</td>
+      <td>7.312365e-01</td>
+      <td>7.339001e-01</td>
+      <td>2.275435e-01</td>
+      <td>7.916084e-01</td>
+      <td>8.750809e-01</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>179.500000</td>
+      <td>59.500000</td>
+      <td>8.061613e+00</td>
+      <td>2.396203e+00</td>
+      <td>1.977760e+00</td>
+      <td>9.611661e+00</td>
+      <td>2.148046e+00</td>
+      <td>1.736556e+00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">17</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">_basemap</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">build_map</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;merc&#39;</span><span class="p">,</span> <span class="n">minLat</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">minLon</span><span class="p">,</span> <span class="n">maxLon</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="mi">111</span><span class="p">,</span> <span class="s1">&#39;lb&#39;</span><span class="p">)</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="s1">&#39;go&#39;</span><span class="p">,</span> <span class="s1">&#39;co&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">ik</span><span class="p">,</span> <span class="n">tracer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tracers</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;s_longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;s_latitude&#39;</span><span class="p">,</span> <span class="n">tracer</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">kmeans</span> <span class="o">=</span> <span class="n">km</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">centers</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">cluster_centers_</span>
+    <span class="k">for</span> <span class="n">center</span> <span class="ow">in</span> <span class="n">centers</span><span class="p">:</span>
+        <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">_basemap</span><span class="p">(</span><span class="n">lon_scale</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">([</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]]),</span> <span class="n">lat_scale</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">([</span><span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]]))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="n">ik</span><span class="p">],</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.8</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">tracer</span><span class="p">)</span>
+
+        
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+<span class="n">by_label</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">handles</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">by_label</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">by_label</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">loc</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">_x</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span>
+<span class="n">_y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span>
+<span class="n">_feat_data</span><span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;oxygen&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span>
+
+<span class="n">x_coord</span><span class="p">,</span><span class="n">y_coord</span> <span class="o">=</span> <span class="n">_basemap</span><span class="p">(</span><span class="n">_x</span><span class="p">,</span> <span class="n">_y</span><span class="p">)</span>
+<span class="n">cbar_pad</span> <span class="o">=</span> <span class="mf">.22</span>
+<span class="c1"># plt.tight_layout(pad=3, w_pad=4., h_pad=3.0)</span>
+<span class="n">ylabpad</span> <span class="o">=</span> <span class="mi">35</span>
+<span class="n">xlabpad</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="c1"># plt.tight_layout(pad=0.4, w_pad=1., h_pad=1.0)</span>
+            
+
+<span class="c1"># define grid.</span>
+<span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">x_coord</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">x_coord</span><span class="p">),</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">yi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">y_coord</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">y_coord</span><span class="p">),</span><span class="mi">300</span><span class="p">)</span>
+
+<span class="c1"># grid the data.</span>
+<span class="n">zi</span> <span class="o">=</span> <span class="n">griddata</span><span class="p">(</span><span class="n">x_coord</span><span class="p">,</span><span class="n">y_coord</span><span class="p">,</span><span class="n">_feat_data</span><span class="p">,</span><span class="n">xi</span><span class="p">,</span><span class="n">yi</span><span class="p">,</span><span class="n">interp</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+
+<span class="c1"># contour the gridded data, plotting dots at the nonuniform data points.</span>
+<span class="n">CS</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span><span class="n">yi</span><span class="p">,</span><span class="n">zi</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">CS</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span><span class="n">yi</span><span class="p">,</span><span class="n">zi</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">brg</span><span class="p">,</span> 
+                <span class="n">vmax</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">zi</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">vmin</span><span class="o">=</span><span class="nb">abs</span><span class="p">(</span><span class="n">zi</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+<span class="c1"># plt.legend(loc=3)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.34735774993896484
+</pre></div>
+</div>
+<img alt="../_images/f8034396d70f91d7a4275aa63a010e1a0b916ea915a5e3ef08e94821d3d6d6bb.png" src="../_images/f8034396d70f91d7a4275aa63a010e1a0b916ea915a5e3ef08e94821d3d6d6bb.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Returns data for specific variables for relevant spatial constraints </span>
+<span class="c1"># uses: dfQueryFunc</span>
+<span class="c1"># slice type: plan, NSsection, EWsection</span>
+<span class="c1"># kwargs: plan: depth; NSsection: lonTraj, latLImits; EWsection: latTrag, lonLimits</span>
+<span class="k">def</span> <span class="nf">amassData</span><span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">minLon</span><span class="p">,</span> <span class="n">maxLon</span><span class="p">,</span> <span class="n">_in_var_names</span><span class="p">,</span> <span class="n">_sliceType</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">DB_NAME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;DB_NAME&#39;</span><span class="p">]</span>
+    <span class="n">DB_USER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;DB_USER&#39;</span><span class="p">]</span>
+    <span class="n">DB_PASS</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;DB_PASS&#39;</span><span class="p">]</span>
+    <span class="n">DB_SERVICE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;DB_SERVICE&#39;</span><span class="p">]</span>
+    <span class="n">DB_PORT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;DB_PORT&#39;</span><span class="p">]</span>
+    <span class="n">SQLALCHEMY_DATABASE_URI</span> <span class="o">=</span> <span class="s1">&#39;postgresql://</span><span class="si">{0}</span><span class="s1">:</span><span class="si">{1}</span><span class="s1">@</span><span class="si">{2}</span><span class="s1">:</span><span class="si">{3}</span><span class="s1">/</span><span class="si">{4}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">DB_USER</span><span class="p">,</span> <span class="n">DB_PASS</span><span class="p">,</span> <span class="n">DB_SERVICE</span><span class="p">,</span> <span class="n">DB_PORT</span><span class="p">,</span> <span class="n">DB_NAME</span><span class="p">)</span>
+    <span class="c1"># conn, meta, url = connect(&#39;jlanders&#39;, &#39;&#39;, &#39;odv_app_dev2&#39;, host=&#39;localhost&#39;)    </span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">create_engine</span><span class="p">(</span><span class="n">SQLALCHEMY_DATABASE_URI</span><span class="p">,</span> <span class="n">client_encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">_sliceType</span><span class="p">)</span>
+    <span class="c1"># Depth slice</span>
+    <span class="k">if</span> <span class="n">_sliceType</span> <span class="o">==</span> <span class="s1">&#39;plan&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;depth&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">_depth</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_depth</span> <span class="o">=</span> <span class="mi">1500</span>
+        
+
+        <span class="n">query</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">dfQueryFunc</span><span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">minLon</span><span class="p">,</span> <span class="n">maxLon</span><span class="p">,</span> <span class="n">_in_var_names</span><span class="p">,</span> <span class="n">Depth</span> <span class="o">=</span> <span class="n">_depth</span><span class="p">)</span>
+
+
+        <span class="c1"># psql</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">cluster_d</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ik</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+                <span class="n">cluster_d</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">ik</span><span class="p">])</span> 
+
+        <span class="n">_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cluster_d</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">])</span>
+        <span class="n">_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cluster_d</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">])</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;psql&#39;</span><span class="p">,</span> <span class="n">t1</span><span class="o">-</span><span class="n">t0</span><span class="p">)</span>
+    
+        <span class="n">_xLab</span> <span class="o">=</span> <span class="s1">&#39;Longitude (deg)&#39;</span>
+        <span class="n">_yLab</span> <span class="o">=</span> <span class="s1">&#39;Latitude (deg)&#39;</span>
+        <span class="n">_basemap</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">_latLon_params</span> <span class="o">=</span> <span class="kc">None</span>
+    
+    <span class="c1"># North-South (longitudinal) slice </span>
+    <span class="k">if</span> <span class="n">_sliceType</span> <span class="o">==</span> <span class="s1">&#39;NSsection&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;lonTraj&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">_lonTraj</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lonTraj&#39;</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_lonTraj&#39;</span><span class="p">,</span> <span class="n">_lonTraj</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_lonTraj</span> <span class="o">=</span> <span class="o">-</span><span class="mi">15</span>
+      
+        <span class="k">if</span> <span class="s1">&#39;latLimits&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">_latLims</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;latLimits&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_latLims</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">55</span><span class="p">,</span> <span class="o">-</span><span class="mi">35</span><span class="p">]</span>
+        
+        <span class="n">query</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">dfQueryFunc</span><span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">minLon</span><span class="p">,</span> <span class="n">maxLon</span><span class="p">,</span> <span class="n">_in_var_names</span><span class="p">,</span> <span class="n">Longitude</span> <span class="o">=</span> <span class="n">_lonTraj</span><span class="p">,</span> <span class="n">latLimits</span> <span class="o">=</span> <span class="n">_latLims</span><span class="p">)</span>
+
+        <span class="c1"># psql</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">cluster_d</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ik</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+                <span class="n">cluster_d</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">ik</span><span class="p">])</span> 
+
+        <span class="n">_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cluster_d</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">])</span>
+        <span class="n">_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cluster_d</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">])</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;psql&#39;</span><span class="p">,</span> <span class="n">t1</span><span class="o">-</span><span class="n">t0</span><span class="p">)</span>
+      
+        <span class="n">_yLab</span> <span class="o">=</span> <span class="s1">&#39;Depth (m)&#39;</span>  
+        <span class="n">_xLab</span> <span class="o">=</span> <span class="s1">&#39;Latitude (deg) along &#39;</span><span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> $^\circ$&#39;</span> <span class="o">%</span> <span class="nb">abs</span><span class="p">(</span><span class="n">_lonTraj</span><span class="p">)</span><span class="o">+</span> <span class="p">[</span><span class="s1">&#39;W&#39;</span> <span class="k">if</span> <span class="n">lon</span><span class="o">&lt;</span><span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;E&#39;</span> <span class="k">for</span> <span class="n">lon</span> <span class="ow">in</span> <span class="p">[</span><span class="n">_lonTraj</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">_basemap</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">_latLon_params</span> <span class="o">=</span> <span class="p">((</span><span class="n">_lonTraj</span><span class="p">,</span> <span class="n">_lonTraj</span><span class="p">),</span> <span class="n">_latLims</span><span class="p">)</span>
+  
+  <span class="c1"># East-West (latitudeinal) slice</span>
+    <span class="k">if</span> <span class="n">_sliceType</span> <span class="o">==</span> <span class="s1">&#39;EWsection&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;latTraj&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">_latTraj</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;latTraj&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_latTraj</span> <span class="o">=</span> <span class="o">-</span><span class="mi">45</span>
+      
+        <span class="k">if</span> <span class="s1">&#39;lonLimits&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">_lonLims</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lonLimits&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_lonLims</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+        
+        <span class="n">query</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">dfQueryFunc</span><span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">minLon</span><span class="p">,</span> <span class="n">maxLon</span><span class="p">,</span> <span class="n">_in_var_names</span><span class="p">,</span> <span class="n">Latitude</span> <span class="o">=</span> <span class="n">_latTraj</span><span class="p">,</span> <span class="n">lonLimits</span> <span class="o">=</span> <span class="n">_lonLims</span><span class="p">)</span>      
+
+        <span class="c1"># psql</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">cluster_d</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ik</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+                <span class="n">cluster_d</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">ik</span><span class="p">])</span> 
+
+        <span class="n">_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cluster_d</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">])</span>
+        <span class="n">_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cluster_d</span><span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">])</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;psql&#39;</span><span class="p">,</span> <span class="n">t1</span><span class="o">-</span><span class="n">t0</span><span class="p">)</span>
+      
+        <span class="n">_yLab</span> <span class="o">=</span> <span class="s1">&#39;Depth (m))&#39;</span>  
+        <span class="n">_xLab</span> <span class="o">=</span> <span class="s1">&#39;Longitude (deg) along &#39;</span><span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> $^\circ$&#39;</span> <span class="o">%</span> <span class="nb">abs</span><span class="p">(</span><span class="n">_latTraj</span><span class="p">)</span><span class="o">+</span> <span class="p">[</span><span class="s1">&#39;S&#39;</span> <span class="k">if</span> <span class="n">lat</span><span class="o">&lt;</span><span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;N&#39;</span> <span class="k">for</span> <span class="n">lat</span> <span class="ow">in</span> <span class="p">[</span><span class="n">_latTraj</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">_basemap</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">_latLon_params</span> <span class="o">=</span> <span class="p">(</span><span class="n">_lonLims</span><span class="p">,</span> <span class="p">[</span><span class="n">_latTraj</span><span class="p">,</span> <span class="n">_latTraj</span><span class="p">])</span>
+  
+    <span class="c1"># _feat_data = cluster_df[_in_var_names].as_matrix()</span>
+
+    <span class="n">_feat_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">cluster_d</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">_in_var_names</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">ik</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_in_var_names</span><span class="p">):</span>
+        <span class="n">_feat_data</span><span class="p">[:,</span> <span class="n">ik</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cluster_d</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+
+      
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">_feat_data</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">_x</span> <span class="o">=</span> <span class="n">_x</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]</span>
+    <span class="n">_y</span> <span class="o">=</span> <span class="n">_y</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]</span>
+    <span class="n">_feat_data</span> <span class="o">=</span> <span class="n">_feat_data</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_in_var_names</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> 
+        <span class="n">_feat_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">_feat_data</span><span class="p">)</span>
+  
+    <span class="k">return</span> <span class="n">_x</span><span class="p">,</span> <span class="n">_y</span><span class="p">,</span> <span class="n">_feat_data</span><span class="p">,</span> <span class="n">_basemap</span><span class="p">,</span> <span class="n">_xLab</span><span class="p">,</span> <span class="n">_yLab</span><span class="p">,</span> <span class="n">_latLon_params</span>
+
+<span class="k">def</span> <span class="nf">make_section</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">_colors</span><span class="p">,</span> <span class="n">_x</span><span class="p">,</span> <span class="n">_y</span><span class="p">,</span> <span class="n">_latLon_params</span><span class="p">,</span> <span class="n">model_raw</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">model_raw</span> <span class="o">==</span> <span class="s1">&#39;model&#39;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">im</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_x</span><span class="p">)):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">_x</span><span class="p">[</span><span class="n">im</span><span class="p">],</span> <span class="n">_y</span><span class="p">[</span><span class="n">im</span><span class="p">],</span> <span class="n">c</span> <span class="o">=</span> <span class="n">_colors</span><span class="p">[</span><span class="n">im</span><span class="p">],</span> <span class="n">marker</span> <span class="o">=</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.1</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+
+    <span class="n">axin</span> <span class="o">=</span> <span class="n">inset_axes</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;35%&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;35%&quot;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">inmap</span> <span class="o">=</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;ortho&#39;</span><span class="p">,</span> <span class="n">lon_0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">_latLon_params</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">lat_0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">axin</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s1">&#39;NE&#39;</span><span class="p">)</span>
+    <span class="n">inmap</span><span class="o">.</span><span class="n">fillcontinents</span><span class="p">()</span>
+    <span class="n">inmap</span><span class="o">.</span><span class="n">drawcoastlines</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">inmap</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">_latLon_params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">_latLon_params</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;-k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span> <span class="p">,</span> <span class="n">latlon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  
+    <span class="k">return</span> <span class="n">ax</span>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Plots raw data either in section or plan.</span>
+<span class="sd">If there is a basemap, x=lon, y=lat and data is from a depth slice (plan).</span>
+<span class="sd">If not, x=lat or lon, y=depth.</span>
+<span class="sd">Both plot types are colored by contour for a specific chemical constituent. </span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="c1"># def plotRaw(_x, _y, _feat_data, _basemap, _xLab, _yLab, _latLon_params, _in_var_names):</span>
+
+<span class="k">def</span> <span class="nf">getRaw</span><span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">minLon</span><span class="p">,</span> <span class="n">maxLon</span><span class="p">,</span> <span class="n">_in_var_names</span><span class="p">,</span> <span class="n">_sliceType</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">units_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;temperature&#39;</span><span class="p">:</span> <span class="s1">&#39;$^\circ$C&#39;</span><span class="p">,</span> <span class="s1">&#39;oxygen&#39;</span><span class="p">:</span> <span class="s1">&#39;ml/l&#39;</span><span class="p">,</span> <span class="s1">&#39;aou&#39;</span><span class="p">:</span> <span class="s1">&#39;ml/l&#39;</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">:</span> <span class="s1">&#39;$^\circ$E&#39;</span><span class="p">,</span> <span class="s1">&#39;salinity&#39;</span><span class="p">:</span> <span class="s1">&#39;(psu)&#39;</span><span class="p">,</span> <span class="s1">&#39;nitrate&#39;</span><span class="p">:</span> <span class="s1">&#39;$\mu$mol/l&#39;</span><span class="p">,</span> <span class="s1">&#39;depth&#39;</span><span class="p">:</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;phosphate&#39;</span><span class="p">:</span> <span class="s1">&#39;$\mu$mol/l&#39;</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">:</span> <span class="s1">&#39;$^\circ$N&#39;</span><span class="p">,</span> <span class="s1">&#39;oxygen_saturation&#39;</span><span class="p">:</span> <span class="s1">&#39;%&#39;</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">_sliceType</span> <span class="o">==</span> <span class="s1">&#39;NSsection&#39;</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lonTraj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">minLon</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;latLimits&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">_sliceType</span> <span class="o">==</span> <span class="s1">&#39;EWsection&#39;</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;latTraj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">minLat</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lonLimits&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">minLon</span><span class="p">,</span> <span class="n">maxLon</span><span class="p">)</span>
+
+    <span class="n">_x</span><span class="p">,</span> <span class="n">_y</span><span class="p">,</span> <span class="n">_feat_data</span><span class="p">,</span> <span class="n">_basemap</span><span class="p">,</span> <span class="n">xLab</span><span class="p">,</span> <span class="n">yLab</span><span class="p">,</span> <span class="n">_latLon_params</span> <span class="o">=</span> <span class="n">amassData</span><span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">minLon</span><span class="p">,</span> <span class="n">maxLon</span><span class="p">,</span> <span class="n">_in_var_names</span><span class="p">,</span> <span class="n">_sliceType</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_x</span><span class="p">,</span> <span class="n">_y</span><span class="p">,</span> <span class="n">_feat_data</span><span class="p">,</span> <span class="n">_basemap</span><span class="p">,</span> <span class="n">xLab</span><span class="p">,</span> <span class="n">yLab</span><span class="p">,</span> <span class="n">_latLon_params</span>
+
+<span class="k">def</span> <span class="nf">plotRaw</span><span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">minLon</span><span class="p">,</span> <span class="n">maxLon</span><span class="p">,</span> <span class="n">_in_var_names</span><span class="p">,</span> <span class="n">_sliceType</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">units_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;temperature&#39;</span><span class="p">:</span> <span class="s1">&#39;$^\circ$C&#39;</span><span class="p">,</span> <span class="s1">&#39;oxygen&#39;</span><span class="p">:</span> <span class="s1">&#39;ml/l&#39;</span><span class="p">,</span> <span class="s1">&#39;aou&#39;</span><span class="p">:</span> <span class="s1">&#39;ml/l&#39;</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">:</span> <span class="s1">&#39;$^\circ$E&#39;</span><span class="p">,</span> <span class="s1">&#39;salinity&#39;</span><span class="p">:</span> <span class="s1">&#39;(psu)&#39;</span><span class="p">,</span> <span class="s1">&#39;nitrate&#39;</span><span class="p">:</span> <span class="s1">&#39;$\mu$mol/l&#39;</span><span class="p">,</span> <span class="s1">&#39;depth&#39;</span><span class="p">:</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;phosphate&#39;</span><span class="p">:</span> <span class="s1">&#39;$\mu$mol/l&#39;</span><span class="p">,</span> <span class="s1">&#39;latitude&#39;</span><span class="p">:</span> <span class="s1">&#39;$^\circ$N&#39;</span><span class="p">,</span> <span class="s1">&#39;oxygen_saturation&#39;</span><span class="p">:</span> <span class="s1">&#39;%&#39;</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">_sliceType</span> <span class="o">==</span> <span class="s1">&#39;NSsection&#39;</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lonTraj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">minLon</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;latLimits&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">_sliceType</span> <span class="o">==</span> <span class="s1">&#39;EWsection&#39;</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;latTraj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">minLat</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lonLimits&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">minLon</span><span class="p">,</span> <span class="n">maxLon</span><span class="p">)</span>
+
+    <span class="n">_x</span><span class="p">,</span> <span class="n">_y</span><span class="p">,</span> <span class="n">_feat_data</span><span class="p">,</span> <span class="n">_basemap</span><span class="p">,</span> <span class="n">xLab</span><span class="p">,</span> <span class="n">yLab</span><span class="p">,</span> <span class="n">_latLon_params</span> <span class="o">=</span> <span class="n">amassData</span><span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">minLon</span><span class="p">,</span> <span class="n">maxLon</span><span class="p">,</span> <span class="n">_in_var_names</span><span class="p">,</span> <span class="n">_sliceType</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_feat_data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span> <span class="s1">&#39;Please limit feature data to one variable&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">17</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_basemap</span><span class="p">:</span>
+            <span class="n">_basemap</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">build_map</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;merc&#39;</span><span class="p">,</span> <span class="n">minLat</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">minLon</span><span class="p">,</span> <span class="n">maxLon</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="mi">111</span><span class="p">,</span> <span class="s1">&#39;lb&#39;</span><span class="p">)</span>
+            <span class="n">x_coord</span><span class="p">,</span><span class="n">y_coord</span> <span class="o">=</span> <span class="n">_basemap</span><span class="p">(</span><span class="n">_x</span><span class="p">,</span> <span class="n">_y</span><span class="p">)</span>
+            <span class="n">cbar_pad</span> <span class="o">=</span> <span class="mf">.22</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">pad</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">w_pad</span><span class="o">=</span><span class="mf">4.</span><span class="p">,</span> <span class="n">h_pad</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
+            <span class="n">ylabpad</span> <span class="o">=</span> <span class="mi">35</span>
+            <span class="n">xlabpad</span> <span class="o">=</span> <span class="mi">25</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">pad</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">w_pad</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">h_pad</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x_coord</span> <span class="o">=</span> <span class="n">_x</span>
+            <span class="n">y_coord</span> <span class="o">=</span> <span class="n">_y</span>
+            <span class="n">ylabpad</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">xlabpad</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># define grid.</span>
+        <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">x_coord</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">x_coord</span><span class="p">),</span><span class="mi">300</span><span class="p">)</span>
+        <span class="n">yi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">y_coord</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">y_coord</span><span class="p">),</span><span class="mi">300</span><span class="p">)</span>
+
+        <span class="c1"># grid the data.</span>
+        <span class="n">zi</span> <span class="o">=</span> <span class="n">griddata</span><span class="p">(</span><span class="n">x_coord</span><span class="p">,</span><span class="n">y_coord</span><span class="p">,</span><span class="n">_feat_data</span><span class="p">,</span><span class="n">xi</span><span class="p">,</span><span class="n">yi</span><span class="p">,</span><span class="n">interp</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+
+        <span class="c1"># contour the gridded data, plotting dots at the nonuniform data points.</span>
+        <span class="n">CS</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span><span class="n">yi</span><span class="p">,</span><span class="n">zi</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+        <span class="n">CS</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span><span class="n">yi</span><span class="p">,</span><span class="n">zi</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">rainbow</span><span class="p">,</span> 
+                        <span class="n">vmax</span><span class="o">=</span><span class="nb">abs</span><span class="p">(</span><span class="n">zi</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">vmin</span><span class="o">=</span><span class="nb">abs</span><span class="p">(</span><span class="n">zi</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+        
+        <span class="c1"># label axes</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">yLab</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">axis_sz</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">labelpad</span> <span class="o">=</span> <span class="n">ylabpad</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xLab</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">axis_sz</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">labelpad</span> <span class="o">=</span> <span class="n">xlabpad</span><span class="p">)</span>
+
+        <span class="c1"># reverse axis of y is depth</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_basemap</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">make_section</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">_x</span><span class="p">,</span><span class="n">_y</span><span class="p">,</span> <span class="n">_latLon_params</span><span class="p">,</span> <span class="s1">&#39;raw&#39;</span><span class="p">)</span>  
+            <span class="n">cbar_pad</span> <span class="o">=</span> <span class="mf">.22</span>
+        
+        <span class="c1"># create colorbar</span>
+        <span class="n">divider</span> <span class="o">=</span> <span class="n">make_axes_locatable</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+        <span class="n">cax</span> <span class="o">=</span> <span class="n">divider</span><span class="o">.</span><span class="n">append_axes</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;3%&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="n">cbar_pad</span><span class="p">)</span>
+        <span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
+        <span class="n">cbar_label</span> <span class="o">=</span> <span class="n">_in_var_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; (&#39;</span> <span class="o">+</span> <span class="n">units_dict</span><span class="p">[</span><span class="n">_in_var_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
+        <span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">cbar_label</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">axis_sz</span><span class="p">)</span> 
+        
+        <span class="c1"># set tick size</span>
+        <span class="n">xtickNames</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">()</span>
+        <span class="n">ytickNames</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_yticklabels</span><span class="p">()</span>
+        <span class="n">cbartickNames</span> <span class="o">=</span> <span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_yticklabels</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">names</span> <span class="ow">in</span> <span class="p">[</span><span class="n">ytickNames</span><span class="p">,</span> <span class="n">xtickNames</span><span class="p">,</span> <span class="n">cbartickNames</span><span class="p">]:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">tick_sz</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span>
+
+        <span class="c1"># plt.show()</span>
+        <span class="k">return</span> <span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "please_work3"
+        },
+        kernelOptions: {
+            name: "please_work3",
+            path: "./CapstoneProject"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'please_work3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Jordan’s ancient watermass geometry exploration</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="jlanders_capstone.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Probing the Data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jordan Landers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

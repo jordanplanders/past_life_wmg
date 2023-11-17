@@ -1,0 +1,638 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Background (Primer about tracers) &#8212; Watermass Geometry Proto exercise</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=365ca57ee442770a23c6"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'CapstoneProject/tracer_overview_opining';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Capstone" href="jlanders_capstone_fixed.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Watermass Geometry Proto exercise - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Watermass Geometry Proto exercise - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Jordan’s ancient watermass geometry exploration
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Science Bits</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="clustering_centers_on_raw.html">Visualizing cluster centers given added geo features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jlanders_capstone_fixed.html">Capstone</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Background (Primer about tracers)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/jordanplanders/past_life_wmg" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/jordanplanders/past_life_wmg/issues/new?title=Issue%20on%20page%20%2FCapstoneProject/tracer_overview_opining.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/CapstoneProject/tracer_overview_opining.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Background (Primer about tracers)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ocean-circulation-and-watermasses">Ocean Circulation and Watermasses</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#world-ocean-atlas">World Ocean Atlas</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-overview-statistics">Part 1: Overview statistics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-defining-a-watermasses-and-characteristic-values">Part 2: Defining a watermasses and characteristic values</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1-is-the-deep-water-in-the-north-atlantic-statistically-different-from-the-water-in-the-deep-south-atlantic">Q1: Is the deep water in the North Atlantic statistically different from the water in the deep South Atlantic?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q2-how-far-does-southern-ocean-source-water-extend-north">Q2: How far does Southern Ocean source water extend north?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q3-can-we-trace-water-formation-statistically">Q3: Can we trace water formation statistically?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-what-s-next">Part 3: What’s next?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-tracers-and-clustering">Multiple tracers and clustering</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#endmember-analysis-to-trace-flow-trajectory">Endmember analysis to trace flow trajectory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#role-of-non-mixing-processes-on-tracer-distribution">Role of non-mixing processes on tracer distribution</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="background-primer-about-tracers">
+<h1>Background (Primer about tracers)<a class="headerlink" href="#background-primer-about-tracers" title="Permalink to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<section id="ocean-circulation-and-watermasses">
+<h3>Ocean Circulation and Watermasses<a class="headerlink" href="#ocean-circulation-and-watermasses" title="Permalink to this heading">#</a></h3>
+<p>Looking out at the ocean, it is hard to appreciate that the water lapping at your feet is actually on a roughly 1,000 year–somewhat circuitous–trajectory around the earth.  Our knowledge of ocean circulation and the geological, biological, and chemical processes that occur in the ocean come from the collection of measurements made at oceanographic and hydrographic stations of various chemical constituents (e.g. phosphate or oxygen, sometimes called “tracers” because they enable ocenographers to trace a process or trajectory) and properties (e.g temperature, salinity) at various depths ranging from the surface to the sea floor.</p>
+<p>Connecting similar values of a given property along strings of vertical profiles elucidates how water with similar properties (called  a watermass) flows, sinks, upwells, and mixes with other proximal watermasses.</p>
+<p>Consider sections along 25W and 175W.  The contours give a sense of the distribution of water of similar chemical composition.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Pacific</p></th>
+<th class="head"><p>Atlantic</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><img alt="section of phosphate-Pacific" src="https://github.com/jordanplanders/Thinkful/blob/master/Capstone%20Project/raw_demo_plots/phosphate_section_80s-80n_175-175w.png" /></p></td>
+<td><p><img alt="section of phosphate-Atlantic" src="https://github.com/jordanplanders/Thinkful/blob/master/Capstone%20Project/raw_demo_plots/phosphate_section_80s-80n_25-25w.png" /></p></td>
+</tr>
+<tr class="row-odd"><td><p><img alt="section of salinity-Pacific" src="https://github.com/jordanplanders/Thinkful/blob/master/Capstone%20Project/raw_demo_plots/salinity_section_80s-80n_175-175w.png" /></p></td>
+<td><p><img alt="section of salinity-Atlantic" src="https://github.com/jordanplanders/Thinkful/blob/master/Capstone%20Project/raw_demo_plots/salinity_section_80s-80n_25-25w.png" /></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="world-ocean-atlas">
+<h3>World Ocean Atlas<a class="headerlink" href="#world-ocean-atlas" title="Permalink to this heading">#</a></h3>
+<p>The World Ocean Atlas provides data on nitrate, phosphate, oxygen, temperature and salinity.</p>
+</section>
+</section>
+<section id="part-1-overview-statistics">
+<h2>Part 1: Overview statistics<a class="headerlink" href="#part-1-overview-statistics" title="Permalink to this heading">#</a></h2>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Phosphate</p></th>
+<th class="head"><p>Salinity</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><img alt="Phosphate-histogram" src="https://github.com/jordanplanders/Thinkful/blob/master/Capstone%20Project/raw_demo_plots/histograms/phosphate_alldata.png" /></p></td>
+<td><p><img alt="Salinity-histogram" src="https://github.com/jordanplanders/Thinkful/blob/master/Capstone%20Project/raw_demo_plots/histograms/salinity_alldata.png" /></p></td>
+</tr>
+</tbody>
+</table>
+<p>Looking at histograms of phosphate and salinity highlights how different tracers play different roles in the ocean and are influenced different processes.  The roughly normal distribution of salinity reflects that, while evaporation and precipitation, brine rejection and ice melt lead to areas of higher and lower salinity, the salinity of the majority of the ocean is unaffected by processes other than the slow mixing that occurs where watermasses meet.  Because salt is added and removed on very long timescales compared to that of ocean circulation, it salinity is an approximately conservative tracer.</p>
+<p>In contrast, phosphate is not conservative because there are highly active sources and sinks that add and remove it from the water.  Provided sufficient sunlight and complementary nutrients, organisms will incoprorate dissolved phosphate in tissue, reducing its concentration in the water column. When organisms die, they sink and many of them dissolve before reaching the seafloor, returning their phosphate deeper in the water column.  Not only does this process introduce phosphate to the internal ocean by a process other than watermass mixing, but the organic matter that reaches the seafloor may become buried, thereby removing that phosphate from the water column entirely. Sure enough, the phophate histogram has a right tail that suggests the highest phosphate water progressively mixes with lower phosphate water–similar to mixing seen in the mixing inferred from teh salinity histogram.  However, the left side of the distribution is not at all normal because, subject to light and other nutrient limiations, biology strips as much phosphate as from the water column.</p>
+</section>
+<section id="part-2-defining-a-watermasses-and-characteristic-values">
+<h2>Part 2: Defining a watermasses and characteristic values<a class="headerlink" href="#part-2-defining-a-watermasses-and-characteristic-values" title="Permalink to this heading">#</a></h2>
+<p>That said, on a more local scale, and particularly in the deeper ocean where the effects of biology are less pronounced, even phosphate can be used as a tracer. The signature values of deep watermasses are strongly influenced–dare I say, “dominated”–by the characteristic value of the source water and as result can often be used to trace the path and mixing of deep water through the ocean basins.</p>
+<p>Water of a given watermass is “formed” when it sinks or upwells to a new depth and takes on new physical and chemical properties. For example, the salinity of water traveling north as part of the gulf stream along the western edge of the North Atlantic increases due to evaporation, but when it reaches high latitudes, this warm surface water cools and becomes dense enough to sink to as deep as 3500m before starting its trip south as North Atlantic Deep Water (NADW). NADW is characteristically low nitrate and phosphate, high salinity and relatively warm–consistent with the characterisitics of its source water and relatively little mixing with another deep watermass at formation.</p>
+<section id="q1-is-the-deep-water-in-the-north-atlantic-statistically-different-from-the-water-in-the-deep-south-atlantic">
+<h3>Q1: Is the deep water in the North Atlantic statistically different from the water in the deep South Atlantic?<a class="headerlink" href="#q1-is-the-deep-water-in-the-north-atlantic-statistically-different-from-the-water-in-the-deep-south-atlantic" title="Permalink to this heading">#</a></h3>
+<p><img alt="histograms and trajectories of tracers in the Atlantic" src="https://github.com/jordanplanders/Thinkful/blob/master/Capstone%20Project/raw_demo_plots/tracer_hist_lonTraj_Atl.png" /></p>
+<p>Consider the above figure with tracer values at each of several depths along 25W between 68S and 55N for each of the five tracers in column A and histograms of these tracer values in column B. The figures in column A, With the exception of oxygen which is strongly affected by a number of processes, show values fairly consistent through the water column below 3000m at high latitudes, but show a departure in the mid latitutdes where the upper part of the water column (above 3500m) looks like the North Atlantic and the bottom part of the water column (below 4500m) looks like the Southern Ocean.  The trajectory for 4000m is pretty diagonal, connecting the high latitude values, suggesting that this is the depth (approximately) where mixing is happening at the margins between watermasses.</p>
+<p>The two groups of tracer values apparent in the histograms in column B offer further support that the deep Southern Ocean water (Antarctic Bottom Water, AABW) and NADW are distinct watermasses.  Indeed when the tracer values in 50N and 70N and 40W and 20W were compared to the values in 50S and 70S and 40W and 20W at each depth, the two groups were distinct according to a t-test (p=.01) using all tracers.</p>
+</section>
+<section id="q2-how-far-does-southern-ocean-source-water-extend-north">
+<h3>Q2: How far does Southern Ocean source water extend north?<a class="headerlink" href="#q2-how-far-does-southern-ocean-source-water-extend-north" title="Permalink to this heading">#</a></h3>
+<p>In a simplified experiment, I considered whether deep water in the Atlantic Ocean to either most closely resemble a northern or southern end-member value.  I calculated the linear combination of the northern and southern sourced water (based on end-member values from that depth) at each point along 25degW, and colored the point based on which watermass representing a higher percentage of its makeup.  While this is a very rough approximation, it is possible to see some of the structure begin to emerge, including the Antarctic Bottom Water coming from the Southern Ocean and North Atlantic Deep Water filling the center of the Atlantic above it.
+<img alt="two_endmember_analysis of Atlantic" src="https://github.com/jordanplanders/Thinkful/blob/master/Capstone%20Project/raw_demo_plots/connectedness/two_endmember_Atlantic.png" /></p>
+</section>
+<section id="q3-can-we-trace-water-formation-statistically">
+<h3>Q3: Can we trace water formation statistically?<a class="headerlink" href="#q3-can-we-trace-water-formation-statistically" title="Permalink to this heading">#</a></h3>
+<p>Water formation/upwelling and stratification are both circulation patterns in which water moves from one place to another without considerable mixing, either along a vertical path or along a horizontal path, respectively. The below plots compare the level of connectedness as a function of the p-value calculated from two proximal water parcels 3deg x 3deg x 250m or 500m.  The higher the p-value (and thus the higher the likelihood that the values in these parcels were pulled from the same population), the darker the line, and higher the confidence in the connectedness.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Connectedness</p></th>
+<th class="head"><p>Raw Data</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><em>Temperature</em></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><img alt="temperature connectedness in Atlantic" src="https://github.com/jordanplanders/Thinkful/blob/master/Capstone%20Project/raw_demo_plots/connectedness/temperature_connectedness_25W.png" /></p></td>
+<td><p><img alt="section of temperature-Atlantic" src="https://github.com/jordanplanders/Thinkful/blob/master/Capstone%20Project/raw_demo_plots/temperature_section_80s-80n_25-25w.png" /></p></td>
+</tr>
+<tr class="row-even"><td><p><em>Salinity</em></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><img alt="salinity connectedness in Atlantic" src="https://github.com/jordanplanders/Thinkful/blob/master/Capstone%20Project/raw_demo_plots/connectedness/salinity_connectedness_25W.png" /></p></td>
+<td><p><img alt="section of salinity-Atlantic" src="https://github.com/jordanplanders/Thinkful/blob/master/Capstone%20Project/raw_demo_plots/salinity_section_80s-80n_25-25w.png" /></p></td>
+</tr>
+<tr class="row-even"><td><p><em>Phosphate</em></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><img alt="phosphate connectedness in Atlantic" src="https://github.com/jordanplanders/Thinkful/blob/master/Capstone%20Project/raw_demo_plots/connectedness/phosphate_connectedness_25W.png" /></p></td>
+<td><p><img alt="section of phosphate-Atlantic" src="https://github.com/jordanplanders/Thinkful/blob/master/Capstone%20Project/raw_demo_plots/phosphate_section_80s-80n_25-25w.png" /></p></td>
+</tr>
+<tr class="row-even"><td><p><em>Oxygen</em></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><img alt="oxygen connectedness in Atlantic" src="https://github.com/jordanplanders/Thinkful/blob/master/Capstone%20Project/raw_demo_plots/connectedness/oxygen_connectedness_25W.png" /></p></td>
+<td><p><img alt="section of oxygen-Atlantic" src="https://github.com/jordanplanders/Thinkful/blob/master/Capstone%20Project/raw_demo_plots/oxygen_section_80s-80n_25-25w.png" /></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="part-3-what-s-next">
+<h2>Part 3: What’s next?<a class="headerlink" href="#part-3-what-s-next" title="Permalink to this heading">#</a></h2>
+<section id="multiple-tracers-and-clustering">
+<h3>Multiple tracers and clustering<a class="headerlink" href="#multiple-tracers-and-clustering" title="Permalink to this heading">#</a></h3>
+<p>How can we use cluster analysis and multiple tracers to better define watermasses?  What areas are classified differently depending on the combination of tracers used? Are those differences interpretable?</p>
+</section>
+<section id="endmember-analysis-to-trace-flow-trajectory">
+<h3>Endmember analysis to trace flow trajectory<a class="headerlink" href="#endmember-analysis-to-trace-flow-trajectory" title="Permalink to this heading">#</a></h3>
+<p>Extending the endmember anlaysis to trace trajectories, the next level analysis is to acknowledge that the mix varies with longitude, and to analyze at various longitudes, tracing the distribution of the highest percentage of southern ocean source water as it moves north see the extent to which it fills the abyssal ocean.  Higher up in the water column tracing a high and potentially characteristic fraction southern ocean source water might yield the pathway the water takes as it snakes its way from the Southern Ocean to the North Atlantic.</p>
+</section>
+<section id="role-of-non-mixing-processes-on-tracer-distribution">
+<h3>Role of non-mixing processes on tracer distribution<a class="headerlink" href="#role-of-non-mixing-processes-on-tracer-distribution" title="Permalink to this heading">#</a></h3>
+<p>To understand the contribution by a given process, we need to know how much change is due to mixing; if we use a one dimensional mixing model for salinity and then repeat the process for phosphate, how different are the mixtures? statistically different?</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./CapstoneProject"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="jlanders_capstone_fixed.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Capstone</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ocean-circulation-and-watermasses">Ocean Circulation and Watermasses</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#world-ocean-atlas">World Ocean Atlas</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-overview-statistics">Part 1: Overview statistics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-defining-a-watermasses-and-characteristic-values">Part 2: Defining a watermasses and characteristic values</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1-is-the-deep-water-in-the-north-atlantic-statistically-different-from-the-water-in-the-deep-south-atlantic">Q1: Is the deep water in the North Atlantic statistically different from the water in the deep South Atlantic?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q2-how-far-does-southern-ocean-source-water-extend-north">Q2: How far does Southern Ocean source water extend north?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q3-can-we-trace-water-formation-statistically">Q3: Can we trace water formation statistically?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3-what-s-next">Part 3: What’s next?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-tracers-and-clustering">Multiple tracers and clustering</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#endmember-analysis-to-trace-flow-trajectory">Endmember analysis to trace flow trajectory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#role-of-non-mixing-processes-on-tracer-distribution">Role of non-mixing processes on tracer distribution</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jordan Landers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
