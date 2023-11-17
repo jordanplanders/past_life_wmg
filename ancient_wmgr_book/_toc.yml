@@ -8,8 +8,4 @@ parts:
     chapters:
       - file: CapstoneProject/clustering_centers_on_raw
       - file: CapstoneProject/jlanders_capstone_fixed
-      - file: CapstoneProject/tracer_overview_opining
-
-
-
-
+#      - file: CapstoneProject/tracer_overview_opining
