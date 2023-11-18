@@ -1,6 +1,6 @@
 shortname: AncientWMG
 type: Paleobook
-thumbnail: book_thumb.png
+thumbnail: thumbnail.png
 parts:
   - caption: Science Bits
     chapters:
